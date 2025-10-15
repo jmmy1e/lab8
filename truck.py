@@ -4,6 +4,11 @@ class Truck(Vehicle):
     """A heavy truck that can ram through obstacles."""
 
     def special_move(self, obs_loc):
+        """
+        Truck's special:
+        Ram: move 2× speed (costs 15) and ignore obstacles.
+        If energy is low, just move 1.
+        """
         if self.energy < 15:
             self.position = self.position + 1
             return self._name + " tries to ram forward, but is low on energy, moves 1 unit!"

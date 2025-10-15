@@ -2,14 +2,14 @@ import random
 from vehicle import Vehicle
 
 class Motorcycle(Vehicle):
-    """A motorcycle with a Wheelie special move; has a better slow speed."""
+    """A motorcycle with a Wheelie special move and a better slow speed."""
 
     def slow(self, obs_loc):
         """
-        Motorcycle slow:
-          - 0.75×speed ± 1, no energy cost
-          - Does not crash on obstacles (go around)
-          - If an obstacle is in the path, say 'slowly dodges the obstacle'
+        Motorcycle's slow:
+        0.75×speed ± 1, no energy cost.
+        Does not crash on obstacles, goes around them.
+        If an obstacle is in the path, say 'slowly dodges the obstacle'.
         """
         base = int(0.75 * self._speed)
         move = base + random.randint(-1, 1)
@@ -29,6 +29,11 @@ class Motorcycle(Vehicle):
 
 
     def special_move(self, obs_loc):
+        """
+        Motorcycle's special:
+        Wheelie: 75% chance of 2× speed ±1 (costs 15), else fall and move 1.
+        If the wheelie succeeds but hits an obstacle, it crashes on it.
+        """
         if self.energy < 15:
             self.position = self.position + 1
             return self._name + " attempts a wheelie but is low on energy, moves 1 unit!"

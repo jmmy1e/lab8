@@ -1,3 +1,12 @@
+"""
+LAB #8
+    10/15/2025
+    Student 1: Jimmy Le
+    Student 2: Daniel McCray
+
+    Rad Racer: Simple three-lane racing game using abstract classes and inheritance.
+    The user picks a vehicle and races the other two to the finish.
+"""
 import random
 from check_input import get_int_range
 from car import Car
@@ -8,6 +17,7 @@ LANES = 3
 LENGTH = 100  # columns per lane
 
 def make_track():
+    """Builds a blank 3x100 track as a list of lists filled with '-'."""
     track = []
     r = 0
     while r < LANES:
@@ -21,6 +31,7 @@ def make_track():
     return track
 
 def place_obstacles(track):
+    """Places two '0' obstaclkes in each lane (not at the start or end)."""
     r = 0
     while r < LANES:
         placed = 0
@@ -32,6 +43,7 @@ def place_obstacles(track):
         r = r + 1
 
 def next_obstacle(row, current_pos):
+    """Return the index of the next '0' after current_pos, or None if there isn't one."""
     start = current_pos + 1
     i = start
     while i < LENGTH:
@@ -41,6 +53,7 @@ def next_obstacle(row, current_pos):
     return None
 
 def draw_move(track, lane, old_pos, new_pos, ch):
+    """Mark the old position with '*' and the new position with the vehicle letter."""
     if old_pos >= 0 and old_pos < LENGTH:
         track[lane][old_pos] = '*'
     if new_pos >= LENGTH:
@@ -50,7 +63,7 @@ def draw_move(track, lane, old_pos, new_pos, ch):
     track[lane][new_pos] = ch
 
 def print_status_then_track(track, vehicles):
-    # statuses first, then track
+    """Print each vehicle's status line, then print the three lanes."""
     i = 0
     while i < len(vehicles):
         print(vehicles[i])
@@ -61,6 +74,7 @@ def print_status_then_track(track, vehicles):
         r = r + 1
 
 def ordinal(n):
+    """Return a place label (1st, 2nd, 3rd)."""
     if n == 1:
         return "1st"
     elif n == 2:
@@ -69,7 +83,12 @@ def ordinal(n):
         return "3rd"
 
 def main():
-    # Intro / descriptions
+    """
+    Run a single race.
+    Sets up the track and vehicles, prompts the player for moves each round,
+    Randomly pick moves for the other two vehicles, and prints the results.
+    After the player finishes, the game auto-plays the rest to show the final order.
+    """
     print("Rad Racer!")
     print("Choose a vehicle and race it down the track (player = 'P').  Slow down for obstacles ('0') or else you'll crash!")
     print("1. Lightning Car - a fast car. Speed: 7.  Special: Nitro Boost (1.5x speed)")

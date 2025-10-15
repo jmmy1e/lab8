@@ -2,47 +2,58 @@ import abc
 import random
 
 class Vehicle(abc.ABC):
-    """Abstract base vehicle with shared state and movement behavior."""
+    """
+    Base class for all vehicles in the race.
+    Stores the shared state (name, label, speed, position energy)
+    and common move behavior (fast/slow).
+    Subclasses only store and need to fill the special move.
+    """
 
     def __init__(self, name, initial, speed):
+        """Set up and initialize a new vehicle."""
         self._name = name
         self._initial = initial
         self._speed = speed
         self._position = 0
         self._energy = 100
 
-    # ----- properties -----
+    # --- Properties ---
     @property
     def initial(self):
+        """The letter shown on the track for this vehicle."""
         return self._initial
 
     @property
     def position(self):
+        """Current location on the lane."""
         return self._position
 
     @position.setter
     def position(self, value):
+        """Clamp position to 0 or higher."""
         if value < 0:
             value = 0
         self._position = value
 
     @property
     def energy(self):
+        """Current energy (used by fast/special)."""
         return self._energy
 
     @energy.setter
     def energy(self, value):
+        """Restricts energy from going below 0."""
         if value < 0:
             value = 0
         self._energy = value
 
-    # ----- movement methods -----
+    # --- Movements ---
     def fast(self, obs_loc):
         """
         Fast move:
-          - If energy >= 5: spend 5 energy, move (speed ± 1)
-          - Else: move 1
-          - If an obstacle is in the path: crash and stop on obstacle
+        If energy >= 5: spend 5 energy, move (speed ± 1).
+        If an obstacle is in the way, stop on it and crash.
+        If energy is low, just move 1.
         """
         if self.energy >= 5:
             move = random.randint(self._speed - 1, self._speed + 1)
@@ -63,8 +74,8 @@ class Vehicle(abc.ABC):
     def slow(self, obs_loc):
         """
         Slow move:
-          - Move at half speed ± 1 (no energy cost)
-          - Slow 'goes around' obstacles (no crash)
+        Move at half speed ± 1 (no energy cost).
+        Slow 'goes around' obstacles (no crash).
         """
         half = self._speed // 2
         move = random.randint(half - 1, half + 1)
@@ -84,8 +95,12 @@ class Vehicle(abc.ABC):
 
     @abc.abstractmethod
     def special_move(self, obs_loc):
-        """Subclass-specific special move."""
+        """
+        Special move:
+        Subclasses decide the rules and message text.
+        """
         pass
 
     def __str__(self):
+        """Readable status for printing on each turn."""
         return self._name + " [Position - " + str(self.position + 1) + ", Energy - " + str(self.energy) + "]"

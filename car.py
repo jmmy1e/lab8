@@ -5,6 +5,12 @@ class Car(Vehicle):
     """A car with a Nitro Boost special move."""
 
     def special_move(self, obs_loc):
+        """
+        Car's special:
+        Nitro Boost: 1.5× speed ±1 (costs 15 energy).
+        If there’s an obstacle in the path, the car crashes on it.
+        If energy is low, just move 1.
+        """
         if self.energy < 15:
             self.position = self.position + 1
             return self._name + " tries nitro boost but is low on energy, moves 1 unit!"
